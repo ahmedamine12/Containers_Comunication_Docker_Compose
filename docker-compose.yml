@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  frontend:
+    container_name: frontend
+    build: ./project1
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+    environment:
+      - toBackend=http://backend:3001/submit
+  backend:
+    container_name: backend
+    build: ./project2
+    ports:
+      - 3001:3001
+    depends_on:
+      - DB
+    environment:
+      DB_URL: mongodb://DB/mydatabase
+  DB:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mydatabase:/data/db
+
+volumes:
+  mydatabase:
